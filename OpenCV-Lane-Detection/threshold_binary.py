@@ -65,7 +65,13 @@ def mag_thresh(img,orient='x', thresh=(5,100)):
 
 def scale_sobel_thresh(img, sobel_kernel=3, mag_thresh=(5, 15)):
     """
-    Threshold of magnitude of sobel
+    Threshold of magnitude of sobel:
+    1. Convert to Grayscale: The image is first converted to grayscale.
+    2. Sobel Operator: Apply the Sobel operator in both x and y directions.
+    3. Gradient Magnitude: Calculate the magnitude of the gradient.
+    4. Normalization: Normalize the gradient magnitude so that the maximum value is 255.
+    5. Thresholding: Apply a binary threshold based on the mag_thresh parameters.
+    6. Binary Output: Return a binary image where pixels within the threshold range are set to 1, and all others are set to 0.
     """
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     sobelx = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=sobel_kernel)
@@ -138,6 +144,10 @@ def combined_threshold(img):
     white = white_thresh(img)
     black = black_thresh(img)   
     binary_output = ((sobel_x&sobel_y)|white|yellow|hls_2).no(black)
+
+    # # needs to adjust the scaling factor of sobel_scale
+    # binary_output = ((sobel_x & sobel_y) | white | yellow | hls_2 | sobel_scale).no(black)     # Incorporate sobel_scale in the final binary output
+
     # Return the numpy array for the next step
     return binary_output.data
 

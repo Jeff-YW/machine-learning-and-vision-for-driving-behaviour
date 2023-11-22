@@ -136,7 +136,7 @@ class KittiDataset(Dataset):
         gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
 
         if self.transform:
-            save_inference_samples            image = self.transform(image)
+            image = self.transform(image)
             gt_image = self.transform(gt_image)
             image = image.float()
             gt_image = gt_image.float()

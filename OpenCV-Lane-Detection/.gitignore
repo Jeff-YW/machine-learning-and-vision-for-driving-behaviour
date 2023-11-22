@@ -108,5 +108,6 @@ data
 data/
 runs
 runs/
+examples/*.mp4
 .idea
 .idea/

@@ -1,9 +1,13 @@
+import os.path
+
 import numpy as np
 import cv2
 import glob
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import pickle
+
+# This file is used to find the calibration parameter of the camera using chessboard pictures and opencv
 
 # Number of chessboard points
 nx = 9
@@ -18,12 +22,15 @@ objpoints = [] # 3d points in real world space
 imgpoints = [] # 2d points in image plane.
 
 # Make a list of calibration images
-images = glob.glob('./camera_cal/calibration*.jpg')
+images = glob.glob('./camera_cal/calibration*.jpg')     # ‘*’ 通用字符匹配
 
 # Step through the list and search for chessboard corners
 for fname in images:
-    # The first image does not contain the whole chess board. Ignore it.  
-    if fname != './camera_cal/calibration1.jpg':
+
+    # The first image does not contain the whole chess board. Ignore it.
+    if os.path.basename(fname)!= "calibration1.jpg":
+    # if fname != './camera_cal/calibration1.jpg':
+
         img = cv2.imread(fname)
         gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
@@ -35,8 +42,10 @@ for fname in images:
             objpoints.append(objp)
             imgpoints.append(corners)
             # Draw and display the corners
-            img = cv2.drawChessboardCorners(img, (9,6), corners, ret)
+            img = cv2.drawChessboardCorners(img, (9,6), corners, ret)   # plot the point onto the image
             cv2.imshow('img',img)
+            # save the demonstration
+            cv2.imwrite(f"./examples/chessboards/{os.path.basename(fname)}", img)
             cv2.waitKey(500)
 
 cv2.destroyAllWindows()
